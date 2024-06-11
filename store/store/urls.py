@@ -17,10 +17,11 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from core.views import index, contact  
 urlpatterns = [
+    path('item/', include('item.urls')),  # Correctly include the items app's URL
     path ('contact/', contact, name='contact'), # Add this line to the urlpatterns list
     path ('', index, name='index'), # Add this line to the urlpatterns list
     path('admin/', admin.site.urls),
