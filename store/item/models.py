@@ -18,6 +18,7 @@ class Item(models.Model):
     price = models.FloatField()
     brand= models.CharField(max_length=225)
     image = models.ImageField(upload_to='item_images', blank=True, null=True)
+    is_sold = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, related_name='items', on_delete=models.CASCADE)
     
     
