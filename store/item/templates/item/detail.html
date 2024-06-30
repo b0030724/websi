@@ -13,10 +13,65 @@
         <p class="text-gray-500"><strong>Price: </strong>{{ item.price }}</p>
         <p class="text-gray-500"><strong>Seller: </strong>{{ item.created_by.username }}</p>
 
-        <p class="text-gray-700">
-            <strong class="text-gray-500">Description: </strong><br>
-            {{ item.description }}
-        </p>
+        {% if item.description %}
+            <p class="text-gray-700">
+                <strong class="text-gray-500">Description:</strong><br>
+                {{ item.description }}
+            </p>
+        {% endif %}
+        <a href="" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Review item</a>
+        
+        <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+            <h2 class="mb-12 text-2xl text-center">Related Items</h2>
+        
+            <div class="grid grid-cols-3 gap-3">
+                {% for related_item in related_items %}
+                <div>
+                    <a href="{% url 'item:detail' related_item.id %}">
+                        <div>
+                            <img src="{{ related_item.image.url }}" class="rounded-t-xl">
+                        </div>
+                        
+                        <div class="p-6 bg-white rounded-b-xl">
+                            <h2 class="text-2xl">{{ related_item.name }}</h2>
+                            <p class="text-gray-500">Price: {{ related_item.price }}</p>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="w-full mt-6">
+            <h2 class="mb-6 text-xl">Reviews</h2>
+            {% if request.user.is_authenticated %}
+            <form method="post" action=".">
+                {% csrf_token %}
+                
+                <div>
+                    <label for="id_ratings">Ratings</label>
+                    <select id="id_ratings" name="ratings" class="w-full py-3 px-4 border border-gray-300 rounded-xl">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="id_content">Comment</label>
+                    <textarea id="id_content" name="content"></textarea>
+                </div>
+
+                <div>
+                    <button type="submit" class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Submit</button>
+                </div>
+            </form>
+            {% else %}
+            <p>You need to <a href="{% url 'login' %}">log in</a> to leave a review.</p>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}
